@@ -1,30 +1,37 @@
-// Опциональная цепочка и nullish coalescing
-const name = user?.profile?.name ?? 'Гость';
+1. HTML + CSS                    ← база, 1-2 месяца
+   ├── Семантика
+   ├── Flexbox, Grid
+   ├── Адаптив (медиа-запросы)
+   └── БЭМ-нейминг
 
-// Array methods
-const active = users
-  .filter(u => u.active)
-  .map(u => u.name)
-  .sort();
+2. JavaScript                    ← ядро, 3-4 месяца
+   ├── Переменные, типы, функции
+   ├── Массивы, объекты, методы
+   ├── DOM: querySelector, addEventListener
+   ├── События и делегирование
+   ├── ES6+: import/export, деструктуризация
+   ├── Асинхронность: Promise, async/await
+   └── fetch + работа с API
 
-// Object.entries
-Object.entries(config).forEach(([key, value]) => {
-  console.log(key, value);
-});
+3. Git + GitHub                  ← параллельно
+   ├── commit, push, pull
+   ├── ветки
+   └── Pull Request
 
-const storage = {
-  get(key, fallback = null) {
-    try {
-      return JSON.parse(localStorage.getItem(key)) ?? fallback;
-    } catch {
-      return fallback;
-    }
-  },
-  set(key, value) {
-    localStorage.setItem(key, JSON.stringify(value));
-  }
-};
+4. Инструменты                   ← параллельно
+   ├── VS Code + расширения
+   ├── Chrome DevTools
+   └── Live Server
 
-storage.set('theme', 'dark');
-console.log(storage.get('theme')); // 'dark'
+5. Фреймворк                     ← 3-6 месяцев
+   └── React (рекомендую первым)
+
+6. Дополнительно
+   ├── TypeScript
+   ├── Тесты (Jest, Vitest)
+   ├── Vite, сборка
+   └── Tailwind CSS
+
+7. Портфолио                     ← постоянно
+   └── 3-5 проектов на GitHub
 
