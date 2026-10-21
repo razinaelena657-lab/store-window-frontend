@@ -1,37 +1,41 @@
-1. HTML + CSS                    ← база, 1-2 месяца
-   ├── Семантика
-   ├── Flexbox, Grid
-   ├── Адаптив (медиа-запросы)
-   └── БЭМ-нейминг
+# app.py — требуется: pip install flask
+from flask import Flask, render_template, request
 
-2. JavaScript                    ← ядро, 3-4 месяца
-   ├── Переменные, типы, функции
-   ├── Массивы, объекты, методы
-   ├── DOM: querySelector, addEventListener
-   ├── События и делегирование
-   ├── ES6+: import/export, деструктуризация
-   ├── Асинхронность: Promise, async/await
-   └── fetch + работа с API
+app = Flask(__name__)
 
-3. Git + GitHub                  ← параллельно
-   ├── commit, push, pull
-   ├── ветки
-   └── Pull Request
 
-4. Инструменты                   ← параллельно
-   ├── VS Code + расширения
-   ├── Chrome DevTools
-   └── Live Server
+@app.route("/", methods=["GET", "POST"])
+def index():
+    result = None
+    error = None
 
-5. Фреймворк                     ← 3-6 месяцев
-   └── React (рекомендую первым)
+    if request.method == "POST":
+        try:
+            a = float(request.form["a"])
+            b = float(request.form["b"])
+            op = request.form["op"]
 
-6. Дополнительно
-   ├── TypeScript
-   ├── Тесты (Jest, Vitest)
-   ├── Vite, сборка
-   └── Tailwind CSS
+            if op == "+":
+                result = a + b
+            elif op == "-":
+                result = a - b
+            elif op == "*":
+                result = a * b
+            elif op == "/":
+                if b == 0:
+                    error = "Деление на ноль"
+                else:
+                    result = a / b
+            else:
+                error = "Неизвестная операция"
 
-7. Портфолио                     ← постоянно
-   └── 3-5 проектов на GitHub
+        except (ValueError, KeyError):
+            error = "Некорректный ввод"
+
+    return render_template("index.html", result=result, error=error)
+
+
+if __name__ == "__main__":
+    app.run(debug=True)
+
 
