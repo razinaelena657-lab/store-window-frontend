@@ -1,41 +1,71 @@
-# app.py — требуется: pip install flask
-from flask import Flask, render_template, request
-
-app = Flask(__name__)
-
-
-@app.route("/", methods=["GET", "POST"])
-def index():
-    result = None
-    error = None
-
-    if request.method == "POST":
+def calculator():
+    print("=== Калькулятор ===")
+    print("Доступные операции: +, -, *, /, //, %, **")
+    print("Введите 'q' для выхода\n")
+    
+    while True:
         try:
-            a = float(request.form["a"])
-            b = float(request.form["b"])
-            op = request.form["op"]
-
-            if op == "+":
+            # Получаем первое число
+            first = input("Первое число (или 'q' для выхода): ").strip()
+            if first.lower() == 'q':
+                print("До свидания!")
+                break
+            
+            # Получаем знак операции
+            operator = input("Операция (+, -, *, /, //, %, **): ").strip()
+            if operator not in ('+', '-', '*', '/', '//', '%', '**'):
+                print("Ошибка: неизвестная операция\n")
+                continue
+            
+            # Получаем второе число
+            second = input("Второе число: ").strip()
+            
+            # Преобразуем в числа (поддерживаем и целые, и дробные)
+            try:
+                a = float(first)
+                b = float(second)
+            except ValueError:
+                print("Ошибка: введите корректные числа\n")
+                continue
+            
+            # Выполняем операцию
+            if operator == '+':
                 result = a + b
-            elif op == "-":
+            elif operator == '-':
                 result = a - b
-            elif op == "*":
+            elif operator == '*':
                 result = a * b
-            elif op == "/":
+            elif operator == '/':
                 if b == 0:
-                    error = "Деление на ноль"
-                else:
-                    result = a / b
-            else:
-                error = "Неизвестная операция"
-
-        except (ValueError, KeyError):
-            error = "Некорректный ввод"
-
-    return render_template("index.html", result=result, error=error)
+                    print("Ошибка: деление на ноль\n")
+                    continue
+                result = a / b
+            elif operator == '//':
+                if b == 0:
+                    print("Ошибка: деление на ноль\n")
+                    continue
+                result = a // b
+            elif operator == '%':
+                if b == 0:
+                    print("Ошибка: деление на ноль\n")
+                    continue
+                result = a % b
+            elif operator == '**':
+                result = a ** b
+            
+            # Красивый вывод результата
+            if result == int(result):
+                result = int(result)
+            print(f"Результат: {a} {operator} {b} = {result}\n")
+        
+        except KeyboardInterrupt:
+            print("\nПрервано пользователем")
+            break
+        except Exception as e:
+            print(f"Ошибка: {e}\n")
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    calculator()
 
 
