@@ -1,0 +1,117 @@
+import os
+
+# Инициализация курсов валют (относительно RUB)
+# В будущем здесь можно подключить библиотеку requests для получения реальных курсов через API
+CURRENCY_RATES = {
+    "RUB": 1.0,
+    "USD": 92.50,
+    "EUR": 100.20,
+    "CNY": 12.80
+}
+
+# Список для хранения истории операций
+history = []
+
+def clear_screen():
+    """Очистка терминала для красивого интерфейса"""
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+def show_history():
+    """Вывод истории операций"""
+    print("\n--- ИСТОРИЯ ОПЕРАЦИЙ ---")
+    if not history:
+        print("История пока пуста.")
+    else:
+        for idx, item in enumerate(history, 1):
+            print(f"{idx}. {item}")
+    print("------------------------\n")
+
+def calculator():
+    """Логика обычного калькулятора"""
+    print("\n--- КАЛЬКУЛЯТОР ---")
+    try:
+        num1 = float(input("Введите первое число: "))
+        operator = input("Введите операцию (+, -, *, /): ").strip()
+        num2 = float(input("Введите второе число: "))
+
+        if operator == '+':
+            result = num1 + num2
+        elif operator == '-':
+            result = num1 - num2
+        elif operator == '*':
+            result = num1 * num2
+        elif operator == '/':
+            if num2 == 0:
+                print("Ошибка: Деление на ноль невозможно!")
+                return
+            result = num1 / num2
+        else:
+            print("Ошибка: Неверный оператор!")
+            return
+
+        record = f"{num1} {operator} {num2} = {result}"
+        history.append(record)
+        print(f"\nРезультат: {result}")
+
+    except ValueError:
+        print("Ошибка: Пожалуйста, вводите только числа!")
+
+def currency_converter():
+    """Логика конвертера валют"""
+    print("\n--- КОНВЕРТЕР ВАЛЮТ ---")
+    print(f"Доступные валюты: {', '.join(CURRENCY_RATES.keys())}")
+    
+    from_curr = input("Из какой валюты конвертировать?: ").upper().strip()
+    to_curr = input("В какую валюту конвертировать?: ").upper().strip()
+    
+    if from_curr not in CURRENCY_RATES or to_curr not in CURRENCY_RATES:
+        print("Ошибка: Одна из указанных валют не поддерживается!")
+        return
+
+    try:
+        amount = float(input(f"Введите сумму в {from_curr}: "))
+        
+        # Конвертация через базовую валюту (RUB)
+        amount_in_rub = amount * CURRENCY_RATES[from_curr]
+        result = amount_in_rub / CURRENCY_RATES[to_curr]
+        result = round(result, 2)
+        
+        record = f"Конвертация: {amount} {from_curr} -> {result} {to_curr}"
+        history.append(record)
+        print(f"\nРезультат: {amount} {from_curr} = {result} {to_curr}")
+        
+    except ValueError:
+        print("Ошибка: Сумма должна быть числом!")
+
+def main():
+    """Главный цикл программы"""
+    while True:
+        print("\n===== СУПЕР-КАЛЬКУЛЯТОР v3.0 =====")
+        print("1. Обычный калькулятор")
+        print("2. Конвертер валют")
+        print("3. Показать историю операций")
+        print("4. Очистить экран")
+        print("5. Выход")
+        
+        choice = input("\nВыберите действие (1-5): ").strip()
+        
+        if choice == '1':
+            calculator()
+        elif choice == '2':
+            currency_converter()
+        elif choice == '3':
+            show_history()
+        elif choice == '4':
+            clear_screen()
+        elif choice == '5':
+            print("\nСпасибо за использование программы! До свидания.")
+            break
+        else:
+            print("Неверный пункт меню. Попробуйте еще раз.")
+            
+        input("\nНажмите Enter, чтобы продолжить...")
+        clear_screen()
+
+if __name__ == "__main__":
+    clear_screen()
+    main()
